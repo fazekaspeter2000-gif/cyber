@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER - Hacker Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <div class="container">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar left-sidebar">
+            <div class="sidebar-section">
+                <h3>SYSTEM STATUS</h3>
+                <div class="status-item">
+                    <span class="label">CPU:</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 67%"></div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <span class="label">RAM:</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 42%"></div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <span class="label">NET:</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 89%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>ACTIVE MODULES</h3>
+                <div class="module-item">
+                    <span class="pulse"></span>
+                    <span>zizi_core</span>
+                </div>
+                <div class="module-item">
+                    <span class="pulse"></span>
+                    <span>net_daemon</span>
+                </div>
+                <div class="module-item">
+                    <span class="pulse"></span>
+                    <span>crypt_engine</span>
+                </div>
+                <div class="module-item">
+                    <span class="pulse"></span>
+                    <span>exploit_kit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER CONTENT -->
+        <div class="center-content">
+            <!-- AVATAR WITH MOUTH ANIMATION -->
+            <div class="avatar-section">
+                <div class="avatar">
+                    <div class="avatar-head">
+                        <div class="avatar-eyes">
+                            <div class="eye left-eye">
+                                <div class="pupil"></div>
+                            </div>
+                            <div class="eye right-eye">
+                                <div class="pupil"></div>
+                            </div>
+                        </div>
+                        <div class="mouth">
+                            <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                                <path id="mouth-path" d="M 20 25 Q 50 40 80 25" stroke="#00FF00" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="avatar-status">CYBER_AI_ACTIVE</div>
+            </div>
+
+            <!-- MAIN TERMINAL -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="header-title">COMMAND INTERFACE v5.0.0</span>
+                    <span class="header-time" id="time">00:00:00</span>
+                </div>
+                
+                <div class="terminal-content" id="terminal">
+                    <div class="log-line">[OK] System initialized...</div>
+                    <div class="log-line">[OK] Encryption enabled: AES-256-GCM</div>
+                    <div class="log-line">[OK] Network services online</div>
+                    <div class="log-line">[OK] Awaiting input...</div>
+                </div>
+
+                <div class="terminal-input">
+                    <span class="prompt">cyber@kali:~$</span>
+                    <input type="text" id="command-input" placeholder="Enter command..." autocomplete="off">
+                </div>
+            </div>
+
+            <!-- SCAN ANIMATION -->
+            <div class="scan-line"></div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="sidebar right-sidebar">
+            <div class="sidebar-section">
+                <h3>NETWORK INFO</h3>
+                <div class="info-item">
+                    <span class="label">IP:</span>
+                    <span class="value">192.168.1.100</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">GATEWAY:</span>
+                    <span class="value">192.168.1.1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">DNS:</span>
+                    <span class="value">8.8.8.8</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>THREAT LEVEL</h3>
+                <div class="threat-meter">
+                    <div class="threat-bar red"></div>
+                    <div class="threat-bar red"></div>
+                    <div class="threat-bar orange"></div>
+                    <div class="threat-bar yellow"></div>
+                    <div class="threat-bar gray"></div>
+                </div>
+                <span class="threat-text">CRITICAL</span>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>UPTIME</h3>
+                <div class="uptime-display" id="uptime">00:37:42</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
