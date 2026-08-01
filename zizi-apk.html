@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZIZI APK - Hacker Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            color: #00CCFF;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* MATRIX RAIN BACKGROUND */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            opacity: 0.5;
+            font-size: 20px;
+            overflow: hidden;
+            z-index: 0;
+            color: rgba(0, 200, 150, 0.1);
+            line-height: 20px;
+            white-space: pre;
+            pointer-events: none;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            gap: 20px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* LEFT SIDE - ZIZI APK TITLE + TERMINAL */
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .title-bar {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            letter-spacing: 3px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #FFFFFF;
+            border-radius: 5px;
+        }
+
+        /* CENTER - ANONYMOUS HEAD */
+        .center-section {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .anonymous-head {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+            border: 3px solid #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .head-status {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* RIGHT SIDE - SYSTEM INFO + KEYBOARD + FOLDERS */
+        .right-section {
+            flex: 0 0 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-panel {
+            border: 2px solid #FFFFFF;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #00CCFF;
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.5);
+        }
+
+        .info-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 3px 0;
+        }
+
+        .info-label {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: #00CCFF;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            border: 1px solid #00CCFF;
+            background: rgba(0, 200, 255, 0.1);
+            margin-top: 3px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00CCFF, #00FF88);
+            box-shadow: 0 0 10px #00CCFF;
+        }
+
+        /* KEYBOARD */
+        .keyboard {
+            border: 2px solid #FFFFFF;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 3px;
+            justify-content: center;
+        }
+
+        .key {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #FFFFFF;
+            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: bold;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+
+        .key:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        }
+
+        .key:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.95);
+        }
+
+        .key.wide {
+            flex: 1;
+        }
+
+        /* FOLDERS AT BOTTOM */
+        .folders-section {
+            border: 2px solid #FFFFFF;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 5px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .folders-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            font-size: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .folder-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .folder-item {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .folder-icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        .folder-name {
+            font-size: 9px;
+            color: #FFFFFF;
+            word-wrap: break-word;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .folder-item:hover .folder-icon {
+            filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.6));
+            transform: scale(1.1);
+        }
+
+        /* TERMINAL BELOW TITLE */
+        .terminal {
+            flex: 1;
+            border: 2px solid #FFFFFF;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            padding: 10px 15px;
+            border-bottom: 2px solid #FFFFFF;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .terminal-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #00CCFF;
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
+        }
+
+        .log-line {
+            margin-bottom: 4px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .terminal-input {
+            display: flex;
+            gap: 5px;
+            padding: 10px 15px;
+            border-top: 2px solid #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .prompt {
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+        }
+
+        #command-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #00CCFF;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            outline: none;
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
+        }
+
+        #command-input::placeholder {
+            color: rgba(0, 200, 255, 0.3);
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFFFFF;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 1400px) {
+            .right-section {
+                flex: 0 0 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+
+    <div class="container">
+        <!-- LEFT: TITLE + TERMINAL -->
+        <div class="left-section">
+            <div class="title-bar">ZIZI APK</div>
+            
+            <div class="terminal">
+                <div class="terminal-header">zizi@kali:~$ system 254.7-1-deb12u1 (2023-06-16) x86_64 GNU/Linux</div>
+                
+                <div class="terminal-content" id="terminal">
+                    <div class="log-line">[ OK ] Starting ZIZI-CORE v5.0.0 ...</div>
+                    <div class="log-line">[ OK ] Initializing subsystems ...</div>
+                    <div class="log-line">[ OK ] Loading driver: zizi_fs.ko</div>
+                    <div class="log-line">[ OK ] Loading driver: zizi_net.ko</div>
+                    <div class="log-line">[ OK ] Mounting zizi partitions ...</div>
+                    <div class="log-line">[ OK ] Enabling zizi services ...</div>
+                    <div class="log-line">[ OK ] Starting zizi-daemon.service</div>
+                    <div class="log-line">[ OK ] Starting zizi-encrypt.service</div>
+                    <div class="log-line">[ OK ] Starting zizi-network.service</div>
+                    <div class="log-line">[ OK ] Starting zizi-anticheat.service</div>
+                    <div class="log-line">[ OK ] Starting zizi-update.service</div>
+                    <div class="log-line">[ OK ] System checks complete.</div>
+                    <div class="log-line">[ OK ] Welcome back, zizi.</div>
+                    <div class="log-line"></div>
+                    <div class="log-line">zizi@kali:~$ connect --target zizi_core</div>
+                    <div class="log-line">[*] Connecting to zizi_core ...</div>
+                    <div class="log-line">[*] Handshake successful.</div>
+                    <div class="log-line">[*] Encryption: AES-256-GCM</div>
+                    <div class="log-line">[*] Session ID: ZIZI-2025-06-25-0001</div>
+                    <div class="log-line">[*] Access Level: ROOT</div>
+                    <div class="log-line"></div>
+                    <div class="log-line">zizi@kali:~$ launch --mode god</div>
+                    <div class="log-line">[*] God mode activated.</div>
+                    <div class="log-line">[*] All systems operational.</div>
+                </div>
+
+                <div class="terminal-input">
+                    <span class="prompt">zizi@kali:~$</span>
+                    <input type="text" id="command-input" placeholder="Enter command..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER: ANONYMOUS HEAD -->
+        <div class="center-section">
+            <div class="anonymous-head">?</div>
+            <div class="head-status">ANONYMOUS ACTIVE</div>
+        </div>
+
+        <!-- RIGHT: SYSTEM INFO + KEYBOARD + FOLDERS -->
+        <div class="right-section">
+            <!-- SYSTEM INFO -->
+            <div class="info-panel">
+                <div class="info-title">SYSTEM</div>
+                <div class="info-row">
+                    <span class="info-label">OS:</span>
+                    <span class="info-value">ZIZI-05 5.0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">USER:</span>
+                    <span class="info-value">zizi</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">UPTIME:</span>
+                    <span class="info-value" id="uptime">00:37:42</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">KERNEL:</span>
+                    <span class="info-value">6.0-25-211</span>
+                </div>
+            </div>
+
+            <!-- GPU INFO -->
+            <div class="info-panel">
+                <div class="info-title">GPU</div>
+                <div class="info-row">
+                    <span class="info-label">DEVICE:</span>
+                    <span class="info-value">NVIDIA GEFORCE RTX 3060</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">LOAD:</span>
+                    <span class="info-value">37%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 37%"></div>
+                </div>
+            </div>
+
+            <!-- FPS / VRAM / CPU / TEMP / RAM / NETWORK -->
+            <div class="info-panel">
+                <div class="info-row">
+                    <span class="info-label">FPS:</span>
+                    <span class="info-value">237 FPS</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">VRAM:</span>
+                    <span class="info-value">2.1 / 12.0 GB</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 17.5%"></div>
+                </div>
+                <div class="info-row" style="margin-top: 8px;">
+                    <span class="info-label">CPU:</span>
+                    <span class="info-value">INTEL CORE I7-10700K</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">LOAD:</span>
+                    <span class="info-value">26%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 26%"></div>
+                </div>
+                <div class="info-row" style="margin-top: 8px;">
+                    <span class="info-label">TEMP:</span>
+                    <span class="info-value">48°C</span>
+                </div>
+                <div class="info-row" style="margin-top: 8px;">
+                    <span class="info-label">RAM:</span>
+                    <span class="info-value">6.2 / 32.0 GB</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">LOAD:</span>
+                    <span class="info-value">19%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 19%"></div>
+                </div>
+                <div class="info-row" style="margin-top: 8px;">
+                    <span class="info-label">NETWORK</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">IP:</span>
+                    <span class="info-value">192.168.1.100</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">UPLOAD:</span>
+                    <span class="info-value">15.2 KB/s</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">DOWNLOAD:</span>
+                    <span class="info-value">102.4 KB/s</span>
+                </div>
+            </div>
+
+            <!-- KEYBOARD -->
+            <div class="keyboard">
+                <div class="keyboard-row">
+                    <div class="key">1</div>
+                    <div class="key">2</div>
+                    <div class="key">3</div>
+                    <div class="key">4</div>
+                    <div class="key">5</div>
+                    <div class="key">6</div>
+                    <div class="key">7</div>
+                    <div class="key">8</div>
+                    <div class="key">9</div>
+                    <div class="key">0</div>
+                    <div class="key">-</div>
+                </div>
+                <div class="keyboard-row">
+                    <div class="key">TAB</div>
+                    <div class="key">Q</div>
+                    <div class="key">W</div>
+                    <div class="key">E</div>
+                    <div class="key">R</div>
+                    <div class="key">T</div>
+                    <div class="key">Y</div>
+                    <div class="key">U</div>
+                    <div class="key">I</div>
+                    <div class="key">O</div>
+                    <div class="key">P</div>
+                    <div class="key">[</div>
+                </div>
+                <div class="keyboard-row">
+                    <div class="key">CAPS</div>
+                    <div class="key">A</div>
+                    <div class="key">S</div>
+                    <div class="key">D</div>
+                    <div class="key">F</div>
+                    <div class="key">G</div>
+                    <div class="key">H</div>
+                    <div class="key">J</div>
+                    <div class="key">K</div>
+                    <div class="key">L</div>
+                    <div class="key">;</div>
+                </div>
+                <div class="keyboard-row">
+                    <div class="key">SHIFT</div>
+                    <div class="key">Z</div>
+                    <div class="key">X</div>
+                    <div class="key">C</div>
+                    <div class="key">V</div>
+                    <div class="key">B</div>
+                    <div class="key">N</div>
+                    <div class="key">M</div>
+                    <div class="key">,</div>
+                    <div class="key">.</div>
+                </div>
+            </div>
+
+            <!-- FOLDERS -->
+            <div class="folders-section">
+                <div class="folders-title">FILES</div>
+                <div class="folder-grid">
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi apk</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi ikes</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi tools</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi confidential</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi cheats</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi loader</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi config</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi mods</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi data</div>
+                    </div>
+                    <div class="folder-item">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">zizi notes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update uptime
+        let uptimeSeconds = 2262;
+        function updateUptime() {
+            uptimeSeconds++;
+            const hours = String(Math.floor(uptimeSeconds / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((uptimeSeconds % 3600) / 60)).padStart(2, '0');
+            const seconds = String(uptimeSeconds % 60).padStart(2, '0');
+            document.getElementById('uptime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateUptime, 1000);
+
+        // Terminal commands
+        const commandInput = document.getElementById('command-input');
+        const terminalContent = document.getElementById('terminal');
+
+        const commands = {
+            'help': 'Available: help, clear, system, scan, hack, whoami, status',
+            'clear': '',
+            'whoami': 'root@zizi-core',
+            'system': '[*] ZIZI-CORE v5.0.0\n[*] OS: Linux x64\n[*] CPU: Intel i7-10700K\n[*] RAM: 32.0 GB\n[*] GPU: RTX 3060\n[*] Status: OPERATIONAL',
+            'scan': '[*] Network scan initiated...\n[*] Found 47 active hosts\n[*] 12 vulnerabilities detected\n[+] SCAN COMPLETE',
+            'hack': '[*] Initializing exploit suite...\n[*] Firewall bypass: SUCCESS\n[+] ACCESS GRANTED',
+            'status': '[*] All systems ONLINE\n[*] Encryption: ACTIVE\n[*] VPN: CONNECTED',
+            'echo': (arg) => arg || 'echo: no argument'
+        };
+
+        commandInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const command = commandInput.value.trim().toLowerCase();
+                
+                if (command) {
+                    const userLine = document.createElement('div');
+                    userLine.className = 'log-line';
+                    userLine.textContent = `zizi@kali:~$ ${command}`;
+                    terminalContent.appendChild(userLine);
+                }
+                
+                if (command === 'clear') {
+                    terminalContent.innerHTML = '';
+                } else if (command.startsWith('echo ')) {
+                    const arg = command.substring(5);
+                    addTerminalLine(commands.echo(arg));
+                } else if (commands[command]) {
+                    addTerminalLine(commands[command]);
+                } else if (command !== '') {
+                    addTerminalLine(`[!] Command not found: ${command}`);
+                }
+                
+                commandInput.value = '';
+                terminalContent.scrollTop = terminalContent.scrollHeight;
+            }
+        });
+
+        function addTerminalLine(text) {
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            line.textContent = text;
+            terminalContent.appendChild(line);
+        }
+
+        commandInput.focus();
+    </script>
+</body>
+</html>
